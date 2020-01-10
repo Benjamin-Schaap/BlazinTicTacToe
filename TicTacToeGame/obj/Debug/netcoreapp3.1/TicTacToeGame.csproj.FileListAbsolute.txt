@@ -1,0 +1,10 @@
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\bin\Debug\netcoreapp3.1\TicTacToeGame.exe
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\bin\Debug\netcoreapp3.1\TicTacToeGame.deps.json
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\bin\Debug\netcoreapp3.1\TicTacToeGame.runtimeconfig.json
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\bin\Debug\netcoreapp3.1\TicTacToeGame.runtimeconfig.dev.json
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\bin\Debug\netcoreapp3.1\TicTacToeGame.dll
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\bin\Debug\netcoreapp3.1\TicTacToeGame.pdb
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\obj\Debug\netcoreapp3.1\TicTacToeGame.AssemblyInfoInputs.cache
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\obj\Debug\netcoreapp3.1\TicTacToeGame.AssemblyInfo.cs
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\obj\Debug\netcoreapp3.1\TicTacToeGame.dll
+C:\Users\bschaap\source\repos\TicTacToeAIGame\TicTacToeGame\obj\Debug\netcoreapp3.1\TicTacToeGame.pdb

@@ -1,0 +1,74 @@
+﻿@using TicTacToeGame
+
+<style>
+    .cell {
+        display: flex;
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        border-radius: 10px;
+        background-color: black;
+        font-weight: bold;
+        font-size: 2em;
+        color: white;
+    }
+        /*  background-color: darkslateblue; */
+
+        .cell > span {
+            margin: auto;
+            text-align: center;
+        }
+
+        .cell.winner {
+            background-color: #1c7430;
+        }
+        /* background-color: #c82333;*/
+        .cell.RedLoser {
+            background-color: #d44b42;
+        }
+        .cell.BlueLoser {
+            background-color: #4269d4;
+        }
+        .cell.Red {
+            background-color: #e81717;
+        }
+
+        .cell.Blue {
+            background-color: #2e54e8;
+        }
+        .cell.Grey {
+            background-color: #929694;
+        }
+        .cell.Green {
+            background-color: #28a13a;
+        }
+        .cell.Black{
+
+        }
+</style>
+
+<div @onclick="@(() => UpdateCell.InvokeAsync(cords))" class="cell @color">
+
+    @{
+        // If symbol isn't initialized don't display anything
+        if (Symbol == 'X' || Symbol == 'O')
+        {
+            <span>@Symbol</span>
+        }
+    }
+</div>
+@code {
+
+
+    [Parameter]
+    public char Symbol { get; set; }
+
+    [Parameter]
+    public Coordinates cords { get; set; }
+
+    [Parameter]
+    public TileColor color { get; set; }
+
+    [Parameter] public EventCallback<Coordinates> UpdateCell { get; set; }
+
+    }

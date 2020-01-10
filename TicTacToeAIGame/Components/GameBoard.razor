@@ -1,0 +1,211 @@
+﻿@page "/tictactoe"
+
+
+@using TicTacToeGame
+
+@if (newGame == null || newGame.GetStatus() == Status.GameNotStarted)
+{
+    @StartGame();
+}
+
+    <div style="display:flex; justify-content: center">
+        <table>
+            <tr>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[0].coords" color="cells[0].color" Symbol="cells[0].symbol">
+                    </GameCell>
+                </td>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[1].coords" color="cells[1].color" Symbol="cells[1].symbol">
+                    </GameCell>
+                </td>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[2].coords" color="cells[2].color" Symbol="cells[2].symbol">
+                    </GameCell>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[3].coords" color="@cells[3].color" Symbol="cells[3].symbol">
+                    </GameCell>
+                </td>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[4].coords" color="cells[4].color" Symbol="cells[4].symbol">
+                    </GameCell>
+                </td>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[5].coords" color="cells[5].color" Symbol="cells[5].symbol">
+                    </GameCell>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[6].coords" color="cells[6].color" Symbol="cells[6].symbol">
+                    </GameCell>
+                </td>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[7].coords" color="cells[7].color" Symbol="cells[7].symbol">
+                    </GameCell>
+                </td>
+                <td>
+                    <GameCell UpdateCell="UpdateCell" cords="cells[8].coords" color="cells[8].color" Symbol="cells[8].symbol">
+                    </GameCell>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+@code 
+{
+
+    Game newGame;
+
+    [Parameter]
+    public int currentPlayer { get; set; }
+
+    public char Symbol { get; set; }
+
+    public bool isWinner { get; set; }
+
+    public bool shouldReloadBoard { get; set; }
+
+    public string StartGame()
+    {
+        newGame = new Game();
+        newGame.StartGame();
+
+        InitializeCellsList();
+
+        currentPlayer = newGame.GetCurrentPlayer();
+
+        return "";
+    }
+
+    // Needed to manage the Cell.razor divs.
+    //
+    // TODO: Move this cell list functionality into the Game.cs logic, so cells aren't initialized in two places
+    List<Cell> cells = new List<Cell>();
+
+    void InitializeCellsList()
+    {
+        for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+        {
+            for (int columnIndex = 0; columnIndex < 3; columnIndex++)
+            {
+                cells.Add(new Cell(rowIndex, columnIndex));
+            }
+        }
+    }
+
+    public int currentCellIndex { get; set; }
+
+    void UpdateCell(Coordinates cords)
+    {
+        Cell tempCell = new Cell(cords.X, cords.Y);
+
+        for (int index = 0; index < cells.Count; index++)
+        {
+            if (cells[index].coords == cords)
+            {
+                currentCellIndex = index;
+                SaveMove();
+            }
+        }
+
+    }
+
+    public void SaveMove()
+    {
+        if (newGame.GetStatus() != Status.GameFinished)
+        {
+            if (cells[currentCellIndex].color == TileColor.Black)
+            {
+                if (currentPlayer == 1)
+                {
+                    cells[currentCellIndex].color = TileColor.Blue;
+                    cells[currentCellIndex].symbol = 'X';
+
+                }
+                else if (currentPlayer == 2)
+                {
+                    cells[currentCellIndex].color = TileColor.Red;
+                    cells[currentCellIndex].symbol = 'O';
+                }
+                else { }
+
+                newGame.SaveMove(cells[currentCellIndex].coords.X, cells[currentCellIndex].coords.Y, currentPlayer);
+
+                if (newGame.GetStatus() == Status.GameFinished)
+                {
+
+                    isWinner = true;
+                    HighlightWinningCells();
+                }
+
+                currentPlayer = newGame.GetCurrentPlayer();
+                shouldReloadBoard = true;
+            }
+
+        }
+    }
+
+    public int GetAWinningCell(Coordinates cord)
+    {
+
+        int aWinningCell = 0;
+
+        switch (cord.X)
+        {
+            case 0: aWinningCell += 0; break;
+            case 1: aWinningCell += 3; break;
+            case 2: aWinningCell += 6; break;
+            default: break;
+        }
+
+        switch (cord.Y)
+        {
+            case 0: aWinningCell += 0; break;
+            case 1: aWinningCell += 1; break;
+            case 2: aWinningCell += 2; break;
+            default: break;
+        }
+
+        return aWinningCell;
+
+    }
+
+    public void HighlightWinningCells()
+    {
+        List<Coordinates> winCoords = newGame.GetWinningCoordinates();
+
+        List<int> winningCells = new List<int>();
+
+        foreach (Coordinates cord in winCoords)
+        {
+            winningCells.Add(GetAWinningCell(cord));
+        }
+
+        for (int cellIndex = 0; cellIndex < cells.Count; cellIndex++)
+        {
+            if (winningCells.Contains(cellIndex))
+            {
+                cells[cellIndex].color = TileColor.Green;
+            }
+            else if (cells[cellIndex].color == TileColor.Blue)
+            {
+                cells[cellIndex].color = TileColor.BlueLoser;
+            }
+            else if (cells[cellIndex].color == TileColor.Red)
+            {
+                cells[cellIndex].color = TileColor.RedLoser;
+            }
+            else
+            {
+                cells[cellIndex].color = TileColor.Grey;
+            }
+        }
+    }
+}
